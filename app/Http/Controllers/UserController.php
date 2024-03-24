@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\User;
+use Exception;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+use Ramsey\Uuid\Uuid;
+
 class UserController extends Controller
 {
     public function register(Request $request){
         $validation = Validator::make($request->all(),[
             'name' =>'required|string',
             "email"=>'required|string|unique:users',
-            'password'=>'required|string|confirmed'
+            'password'=>'required|string'
         ]);
         if($validation->fails()){
             return response()->json($validation->errors()->all(),400);
